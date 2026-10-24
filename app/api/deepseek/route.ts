@@ -26,6 +26,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Prompt może mieć maksymalnie 20 000 znaków.' }, { status: 413 })
   }
 
+  const systemPrompt = 'systemPrompt' in body ? body.systemPrompt : undefined
+  if (systemPrompt !== undefined && typeof systemPrompt !== 'string') {
+    return NextResponse.json({ error: 'Pole systemPrompt musi być tekstem.' }, { status: 400 })
+  }
+
+  if (typeof systemPrompt === 'string' && systemPrompt.length > 4_000) {
+    return NextResponse.json({ error: 'Instrukcja systemowa może mieć maksymalnie 4 000 znaków.' }, { status: 413 })
+  }
+
   const apiKey = process.env.DEEPSEEK_API_KEY
   if (!apiKey) {
     return NextResponse.json({ error: 'Brak konfiguracji klucza API DeepSeek.' }, { status: 503 })
@@ -40,7 +49,12 @@ export async function POST(req: Request) {
     const response = await openai.chat.completions.create({
       model: 'deepseek-chat',
       messages: [
-        { role: 'system', content: 'Jesteś pomocnym asystentem.' },
+        {
+          role: 'system',
+          content: typeof systemPrompt === 'string' && systemPrompt.trim()
+            ? systemPrompt.trim()
+            : 'Jesteś pomocnym asystentem.',
+        },
         { role: 'user', content: body.prompt.trim() },
       ],
     })
