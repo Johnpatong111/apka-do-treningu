@@ -1,0 +1,90 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --color-teal: var(--teal);
+  --color-amber: var(--amber);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Forma Online: ciemny, grafitowo-zielony motyw z limonkowym akcentem */
+:root {
+  color-scheme: dark;
+  --background: #0b1010;
+  --foreground: #edf4ed;
+  --card: #111917;
+  --card-foreground: #edf4ed;
+  --popover: #131c19;
+  --popover-foreground: #edf4ed;
+  --primary: #c8f169;
+  --primary-foreground: #172014;
+  --secondary: #1b2521;
+  --secondary-foreground: #edf4ed;
+  --muted: #19231f;
+  --muted-foreground: #9aa9a1;
+  --accent: #223024;
+  --accent-foreground: #c8f169;
+  --destructive: #f18b85;
+  --border: #25332d;
+  --input: #2b3933;
+  --ring: #c8f169;
+  --teal: #80d3b2;
+  --amber: #efb56e;
+  --chart-1: #c8f169;
+  --chart-2: #80d3b2;
+  --chart-3: #efb56e;
+  --chart-4: #f18b85;
+  --chart-5: #9aa9a1;
+  --radius: 0.75rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
