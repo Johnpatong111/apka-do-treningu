@@ -7,7 +7,7 @@ import { PageHeader, Panel, Stat, Tag } from '@/components/kit'
 import { WeekPlanner } from '@/components/training/week-planner'
 import { BodyWeight } from '@/components/progress/body-weight'
 import { daysSinceLast, sessionsThisWeek, weekStreak } from '@/lib/analytics'
-import { formatKg, nutritionTargets } from '@/lib/calc'
+import { formatKg } from '@/lib/calc'
 import { formatLong, todayISO } from '@/lib/dates'
 import { getExercise } from '@/lib/exercises'
 import { personalRecords } from '@/lib/progression'
@@ -21,8 +21,6 @@ export function Dashboard() {
   const planned = todays.find((w) => w.status === 'planned')
   const doneToday = todays.find((w) => w.status === 'done')
   const weight = currentWeight(data)
-  const targets = nutritionTargets(data.profile, weight ?? data.profile.goalWeightKg)
-  const kcalToday = data.meals.filter((m) => m.date === today).reduce((s, m) => s + m.kcal, 0)
   const week = sessionsThisWeek(data.workouts)
   const since = daysSinceLast(data.workouts)
   const lastPr = personalRecords(data.workouts).sort((a, b) => b.date.localeCompare(a.date))[0]
@@ -39,7 +37,7 @@ export function Dashboard() {
           since === null
             ? 'Zacznij od wygenerowania pierwszego treningu. Aplikacja zapamięta ciężary i będzie podpowiadać progres.'
             : since === 0
-              ? 'Dzisiejszy trening zaliczony. Teraz regeneracja i białko.'
+                ? 'Dzisiejszy trening zaliczony. Teraz czas na regenerację.'
               : `Ostatni trening: ${since === 1 ? 'wczoraj' : `${since} dni temu`}. Konsekwencja buduje formę.`
         }
       />
@@ -89,7 +87,7 @@ export function Dashboard() {
           unit={weight !== null ? 'kg' : undefined}
           hint={`Cel: ${formatKg(data.profile.goalWeightKg)} kg`}
         />
-        <Stat label="Kalorie dziś" value={kcalToday} unit={`/ ${targets.kcal}`} hint={`Białko: cel ${targets.protein} g`} />
+        <Stat label="Rekordy osobiste" value={personalRecords(data.workouts).length} hint="Ćwiczenia z zapisanym rekordem" />
         <Stat
           label="Ostatni rekord"
           value={lastPr ? formatKg(lastPr.e1rm) : '–'}

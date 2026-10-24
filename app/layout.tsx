@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     template: '%s · Forma Online',
   },
   description:
-    'Generuj treningi na maszynach i z wolnymi ciężarami, zapisuj serie, śledź progres siły, masę ciała i kalorie.',
+    'Generuj treningi na maszynach i z wolnymi ciężarami, zapisuj serie oraz śledź progres siły i masę ciała.',
   generator: 'v0.app',
 }
 

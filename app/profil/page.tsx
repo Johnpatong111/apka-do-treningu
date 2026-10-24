@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: 'Mój profil' }
 export default function ProfilePage() {
   return (
     <>
-      <PageHeader eyebrow="Profil" title="Mój profil" description="Ustaw dane, cele i sprzęt – generator i kalkulator diety dopasują się automatycznie." />
+      <PageHeader eyebrow="Profil" title="Mój profil" description="Ustaw cele treningowe i dostępny sprzęt, aby dopasować generator do swoich potrzeb." />
       <ProfileView />
     </>
   )

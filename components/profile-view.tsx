@@ -4,12 +4,11 @@ import { useRef } from 'react'
 import { Award, Download, Dumbbell, Flame, LockKeyhole, Medal, RotateCcw, Trophy, Upload } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Field, Input, Panel, PanelHeader, Select } from '@/components/kit'
-import { ACTIVITY_LABELS, BODY_GOAL_LABELS } from '@/lib/calc'
 import { formatLong, todayISO } from '@/lib/dates'
 import { EQUIPMENT_LABELS } from '@/lib/exercises'
 import { GOAL_LABELS, LEVEL_LABELS } from '@/lib/generator'
 import { actions, useAppData, useHydrated } from '@/lib/store'
-import type { Activity, AppData, BodyGoal, Equipment, Goal, Level, Sex } from '@/lib/types'
+import type { AppData, Equipment, Goal, Level } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
 const ACHIEVEMENT_ICONS = {
@@ -28,7 +27,7 @@ export function ProfileView() {
 
   if (!hydrated) return <div className="h-96 animate-pulse rounded-2xl bg-card" aria-hidden />
 
-  const numField = (key: 'age' | 'heightCm' | 'goalWeightKg' | 'daysPerWeek', label: string, min: number, max: number) => (
+  const numField = (key: 'goalWeightKg' | 'daysPerWeek', label: string, min: number, max: number) => (
     <Field label={label} htmlFor={`p-${key}`}>
       <Input
         id={`p-${key}`}
@@ -73,31 +72,13 @@ export function ProfileView() {
   return (
     <div className="grid gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
       <Panel>
-        <PanelHeader title="Dane i cele" description="Na tej podstawie liczone są kalorie, makro i domyślne ustawienia generatora" />
+        <PanelHeader title="Dane i cele treningowe" description="Te ustawienia pomagają dopasować generator treningów do Twoich potrzeb." />
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Imię" htmlFor="p-name">
             <Input id="p-name" defaultValue={p.name} onBlur={(e) => actions.updateProfile({ name: e.target.value.trim() })} placeholder="Jak mamy się do Ciebie zwracać?" />
           </Field>
-          <Field label="Płeć" htmlFor="p-sex">
-            <Select id="p-sex" value={p.sex} onChange={(e) => actions.updateProfile({ sex: e.target.value as Sex })}>
-              <option value="male">Mężczyzna</option>
-              <option value="female">Kobieta</option>
-            </Select>
-          </Field>
-          {numField('age', 'Wiek', 14, 100)}
-          {numField('heightCm', 'Wzrost (cm)', 120, 230)}
           {numField('goalWeightKg', 'Docelowa masa (kg)', 35, 250)}
           {numField('daysPerWeek', 'Treningi w tygodniu', 1, 7)}
-          <Field label="Aktywność" htmlFor="p-act">
-            <Select id="p-act" value={p.activity} onChange={(e) => actions.updateProfile({ activity: e.target.value as Activity })}>
-              {Object.entries(ACTIVITY_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-            </Select>
-          </Field>
-          <Field label="Cel sylwetkowy" htmlFor="p-bg">
-            <Select id="p-bg" value={p.bodyGoal} onChange={(e) => actions.updateProfile({ bodyGoal: e.target.value as BodyGoal })}>
-              {Object.entries(BODY_GOAL_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-            </Select>
-          </Field>
           <Field label="Cel treningowy" htmlFor="p-tg">
             <Select id="p-tg" value={p.trainingGoal} onChange={(e) => actions.updateProfile({ trainingGoal: e.target.value as Goal })}>
               {Object.entries(GOAL_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
@@ -136,7 +117,6 @@ export function ProfileView() {
           {[
             ['Treningi', data.workouts.length],
             ['Pomiary', data.weights.length],
-            ['Posiłki', data.meals.length],
           ].map(([k, v]) => (
             <div key={k} className="rounded-xl bg-secondary/60 p-3">
               <dt className="text-xs text-muted-foreground">{k}</dt>

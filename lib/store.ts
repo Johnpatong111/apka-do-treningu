@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from 'react'
 import { checkAchievements } from './achievements'
 import { setCustomExercises } from './exercises'
-import type { AppData, Exercise, Meal, Profile, WeightEntry, Workout } from './types'
+import type { AppData, Exercise, Profile, WeightEntry, Workout } from './types'
 
 /**
  * Tymczasowa warstwa danych w przeglądarce – wszystkie operacje przechodzą przez
@@ -13,12 +13,7 @@ const STORAGE_KEY = 'forma-online:v1'
 
 export const DEFAULT_PROFILE: Profile = {
   name: '',
-  sex: 'male',
-  age: 30,
-  heightCm: 175,
   goalWeightKg: 72,
-  activity: 'moderate',
-  bodyGoal: 'cut',
   daysPerWeek: 4,
   level: 'beginner',
   trainingGoal: 'hypertrophy',
@@ -31,7 +26,6 @@ const DEFAULT_DATA: AppData = {
   workouts: [],
   achievements: checkAchievements([]),
   weights: [],
-  meals: [],
   customExercises: [],
 }
 
@@ -39,10 +33,20 @@ let cache: AppData | null = null
 const listeners = new Set<() => void>()
 
 function normalize(data: Partial<AppData>): AppData {
+  const storedData = { ...data } as Partial<AppData> & { meals?: unknown }
+  delete storedData.meals
   return {
     ...DEFAULT_DATA,
-    ...data,
-    profile: { ...DEFAULT_PROFILE, ...data.profile },
+    ...storedData,
+    profile: {
+      ...DEFAULT_PROFILE,
+      name: data.profile?.name ?? DEFAULT_PROFILE.name,
+      goalWeightKg: data.profile?.goalWeightKg ?? DEFAULT_PROFILE.goalWeightKg,
+      daysPerWeek: data.profile?.daysPerWeek ?? DEFAULT_PROFILE.daysPerWeek,
+      level: data.profile?.level ?? DEFAULT_PROFILE.level,
+      trainingGoal: data.profile?.trainingGoal ?? DEFAULT_PROFILE.trainingGoal,
+      equipment: data.profile?.equipment ?? DEFAULT_PROFILE.equipment,
+    },
     workouts: data.workouts ?? [],
     achievements: checkAchievements(data.workouts ?? [], data.achievements ?? []),
     customExercises: data.customExercises ?? [],
@@ -133,12 +137,6 @@ export const actions = {
   },
   deleteWeight(date: string) {
     update((d) => ({ ...d, weights: d.weights.filter((w) => w.date !== date) }))
-  },
-  addMeal(meal: Meal) {
-    update((d) => ({ ...d, meals: [...d.meals, meal] }))
-  },
-  deleteMeal(id: string) {
-    update((d) => ({ ...d, meals: d.meals.filter((m) => m.id !== id) }))
   },
   saveCustomExercise(ex: Exercise) {
     const next = { ...ex, custom: true }

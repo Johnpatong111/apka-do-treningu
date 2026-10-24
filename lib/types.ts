@@ -70,18 +70,9 @@ export type Workout = {
   completedAt?: string
 }
 
-export type Sex = 'male' | 'female'
-export type Activity = 'sedentary' | 'light' | 'moderate' | 'high' | 'athlete'
-export type BodyGoal = 'cut' | 'maintain' | 'bulk'
-
 export type Profile = {
   name: string
-  sex: Sex
-  age: number
-  heightCm: number
   goalWeightKg: number
-  activity: Activity
-  bodyGoal: BodyGoal
   daysPerWeek: number
   level: Level
   trainingGoal: Goal
@@ -90,22 +81,11 @@ export type Profile = {
 
 export type WeightEntry = { date: string; kg: number }
 
-export type Meal = {
-  id: string
-  date: string
-  name: string
-  kcal: number
-  protein: number
-  carbs: number
-  fat: number
-}
-
 export type AppData = {
   version: 1
   profile: Profile
   workouts: Workout[]
   achievements: Achievement[]
   weights: WeightEntry[]
-  meals: Meal[]
   customExercises: Exercise[]
 }

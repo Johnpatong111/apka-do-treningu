@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Apple, Calculator, Dumbbell, LayoutDashboard, TrendingUp, User } from 'lucide-react'
+import { Dumbbell, LayoutDashboard, TrendingUp, User } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
@@ -10,8 +10,6 @@ const NAV = [
   { href: '/', label: 'Panel główny', short: 'Start', icon: LayoutDashboard },
   { href: '/trening', label: 'Treningi', short: 'Trening', icon: Dumbbell },
   { href: '/postepy', label: 'Postępy', short: 'Postępy', icon: TrendingUp },
-  { href: '/odzywianie', label: 'Odżywianie', short: 'Dieta', icon: Apple },
-  { href: '/kalkulatory', label: 'Kalkulatory', short: 'Liczniki', icon: Calculator },
   { href: '/profil', label: 'Mój profil', short: 'Profil', icon: User },
 ]
 
